@@ -1,6 +1,6 @@
 import { IsBoolean, IsString } from "class-validator";
 
-export class FeedLikeDto {
+export class CommentDto {
     @IsString()
     feedId: string;
 
@@ -8,5 +8,5 @@ export class FeedLikeDto {
     userId: string;
 
     @IsBoolean()
-    text: String;
+    text: string;
 }
