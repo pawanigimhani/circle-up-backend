@@ -12,11 +12,10 @@ import {
 import { FeedDto } from '../dto/feed.dto';
 import { FeedLikeDto } from '../dto/feedLike.dto';
 import { CaptionDto } from '../dto/caption.dto';
-
 import { FeedService } from './feed.service';
 
 
-@Controller('api/photographer')
+@Controller('api/')
 export class FeedController {
 
   private readonly logger = new Logger(FeedController.name);
@@ -29,11 +28,11 @@ export class FeedController {
    async getFeed(
        @Param('id') id: string
    ) {
-       this.logger.log(`Getting feed for photographer with ID: ${id}`);
+       this.logger.log(`Getting feed for user with ID: ${id}`);
        try {
            return await this.feedService.getFeed(id);
        } catch (error) {
-           throw new HttpException(`Feed not found for photographer with ID: ${id}`, HttpStatus.NOT_FOUND);
+           throw new HttpException(`Feed not found for user with ID: ${id}`, HttpStatus.NOT_FOUND);
        }
    }
  
@@ -41,11 +40,11 @@ export class FeedController {
    async createFeedComponent(
        @Body() dto: FeedDto
    ) {
-       this.logger.log(`Creating feed component for photographer with ID: ${dto.userId}`);
+       this.logger.log(`Creating feed component for user with ID: ${dto.userId}`);
        try {
            return await this.feedService.createFeedComponent(dto);
        } catch (error) {
-           throw new HttpException(`Error creating feed component for photographer with ID: ${dto.userId}`, HttpStatus.BAD_REQUEST);
+           throw new HttpException(`Error creating feed component for user with ID: ${dto.userId}`, HttpStatus.BAD_REQUEST);
        }
    }
  
@@ -54,11 +53,11 @@ export class FeedController {
        @Param('id') photographerId: string,
        @Body() dto: FeedLikeDto
    ) {
-       this.logger.log(`Liking feed for photographer with ID: ${photographerId}`);
+       this.logger.log(`Liking feed for user with ID: ${photographerId}`);
        try {
            return await this.feedService.feedLike(dto);
        } catch (error) {
-           throw new HttpException(`Error liking feed for photographer with ID: ${photographerId}`, HttpStatus.BAD_REQUEST);
+           throw new HttpException(`Error liking feed for user with ID: ${photographerId}`, HttpStatus.BAD_REQUEST);
        }
    }
 

@@ -23,7 +23,7 @@ export class FeedService {
 
   async getFeed(id: string) {
     try {
-      this.logger.log(`Fetching feed for photographer ID: ${id}`);
+      this.logger.log(`Fetching feed for user ID: ${id}`);
 
       const feed = await this.prisma.feedImage.findMany({
         where: {
@@ -62,12 +62,12 @@ export class FeedService {
       });
 
       this.logger.log(
-        `Successfully fetched ${feed.length} feed items for photographer ID: ${id}`,
+        `Successfully fetched ${feed.length} feed items for user ID: ${id}`,
       );
 
       return feed;
     } catch (error) {
-      this.logger.error(`Failed to fetch feed for photographer ID: ${id}`, error.stack);
+      this.logger.error(`Failed to fetch feed for user ID: ${id}`, error.stack);
       throw error;
     }
 }
@@ -77,7 +77,7 @@ export class FeedService {
   async createFeedComponent(dto: FeedDto) {
     try {
       this.logger.log(
-        `Creating feed component for photographer ID: ${dto.userId}`,
+        `Creating feed component for user ID: ${dto.userId}`,
       );
 
       const newFeedComponent = await this.prisma.feedImage.create({
@@ -97,7 +97,7 @@ export class FeedService {
       return newFeedComponent;
     } catch (error) {
       this.logger.error(
-        `Failed to create feed component for photographer ID: ${dto.userId}`,
+        `Failed to create feed component for user ID: ${dto.userId}`,
         error.stack,
       );
       throw new HttpException(
