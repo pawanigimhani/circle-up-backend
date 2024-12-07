@@ -1,34 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserImageDto } from './dto/userImage.dto';
+import { Logger } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
+
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  private readonly logger = new Logger(UserController.name);
+
+  // Update user's profile image
+
+  @Patch(':id/profile/image')
+  async updateImage(@Body() dto: UserImageDto) {
+      this.logger.log(`Updating image for user with ID: ${dto.userId}`);
+      try {
+          const result = await this.userService.updateImage(dto);
+          this.logger.log(`Image updated successfully for user with ID: ${dto.userId}`);
+          return result;
+      } catch (error) {
+          this.logger.error(`Failed to update image for user with ID: ${dto.userId}`, error.stack);
+          throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      }
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  // Get user details by ID
+
+  @Get(':id/userDetails')
+  async getClientDetails(@Param('id') id: string) {
+      this.logger.log(`Fetching details for user with ID: ${id}`);
+      try {
+          const result = await this.userService.getClientDetails(id);
+          this.logger.log(`Fetched details successfully for user with ID: ${id}`);
+          return result;
+      } catch (error) {
+          this.logger.error(`Failed to fetch details for user with ID: ${id}`, error.stack);
+          throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
 }

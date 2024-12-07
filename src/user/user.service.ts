@@ -1,26 +1,58 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';  
+import { UserImageDto } from './dto/userImage.dto';
+import { Logger, HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
 
-  findAll() {
-    return `This action returns all user`;
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+  private readonly logger = new Logger(UserService.name);
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  // ------- user services ---------
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+  // Update user's profile image
+
+  async updateImage(dto: UserImageDto) {
+    this.logger.log(`Updating image for user with ID: ${dto.userId}`);
+    try {
+        const result = await this.prisma.user.update({
+            where: {
+                id: dto.userId,
+            },
+            data: {
+                image: dto.image,
+            },
+        });
+        this.logger.log(`Image updated successfully for client with ID: ${dto.userId}`);
+        return result;
+    } catch (error) {
+        this.logger.error(`Failed to update image for client with ID: ${dto.userId}`, error.stack);
+        throw new HttpException('Failed to update image', HttpStatus.BAD_REQUEST);
+    }
+}
+
+// Get user details by ID
+
+async getClientDetails(id: string) {
+    this.logger.log(`Fetching details for user with ID: ${id}`);
+    try {
+        const result = await this.prisma.user.findUnique({
+            where: {
+                id: id,
+            },
+            select: {
+                name: true,
+                image: true,
+            }
+        });
+        this.logger.log(`Fetched details successfully for user with ID: ${id}`);
+        return result;
+    } catch (error) {
+        this.logger.error(`Failed to fetch details for user with ID: ${id}`, error.stack);
+        throw new HttpException('Failed to fetch user details', HttpStatus.NOT_FOUND);
+    }
+}
+  
 }
