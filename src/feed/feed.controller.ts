@@ -15,7 +15,7 @@ import { CaptionDto } from '../dto/caption.dto';
 import { FeedService } from './feed.service';
 
 
-@Controller('api/')
+@Controller('api')
 export class FeedController {
 
   private readonly logger = new Logger(FeedController.name);

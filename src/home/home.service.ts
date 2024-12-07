@@ -16,7 +16,6 @@ export class HomeService {
         id: true,
         imageUrl: true,
         likeCount: true,
-        saveCount: true,
         caption: true,
         userId: true,
         user: {
@@ -26,7 +25,6 @@ export class HomeService {
           },
         },
         likedUserIds: true,
-        savedUserIds: true,
         comments: {
           select: {
             id: true,

@@ -22,8 +22,6 @@ model User {
   feed               FeedImage[]
   likedFeedImages    FeedImage[]   @relation("LikedImages", fields: [likedFeedImagesIds], references: [id])
   likedFeedImagesIds String[]      @db.ObjectId
-  savedFeedImages    FeedImage[]   @relation("SavedImages", fields: [savedFeedImagesIds], references: [id])
-  savedFeedImagesIds String[]      @db.ObjectId
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 }
@@ -46,10 +44,7 @@ model FeedImage {
   imageUrl       String
   likes          User[]       @relation("LikedImages", fields: [likedUserIds], references: [id])
   likedUserIds   String[]     @db.ObjectId
-  saves          User[]       @relation("SavedImages", fields: [savedUserIds], references: [id])
-  savedUserIds   String[]     @db.ObjectId
   likeCount      Int          @default(0)
-  saveCount      Int          @default(0)
   caption        String?
   comments       Comment[]
   createdAt      DateTime     @default(now())

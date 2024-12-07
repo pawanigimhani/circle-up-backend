@@ -19,7 +19,7 @@ export class FeedService {
 
   // ------- feed services ---------
 
-  //Fetches the feed for a specific photographer
+  //Fetches the feed for a specific user
 
   async getFeed(id: string) {
     try {
@@ -33,7 +33,6 @@ export class FeedService {
           id: true,
           imageUrl: true,
           likeCount: true,
-          saveCount: true,
           caption: true,
           userId: true,
           user: {
@@ -43,7 +42,6 @@ export class FeedService {
             },
           },
           likedUserIds: true,
-          savedUserIds: true,
           comments: {
             select: {
               id: true,
