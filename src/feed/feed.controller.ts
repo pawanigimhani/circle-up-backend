@@ -50,14 +50,14 @@ export class FeedController {
  
    @Patch(':id/feed/like')
    async feedLike(
-       @Param('id') photographerId: string,
+       @Param('id') userId: string,
        @Body() dto: FeedLikeDto
    ) {
-       this.logger.log(`Liking feed for user with ID: ${photographerId}`);
+       this.logger.log(`Liking feed for user with ID: ${userId}`);
        try {
            return await this.feedService.feedLike(dto);
        } catch (error) {
-           throw new HttpException(`Error liking feed for user with ID: ${photographerId}`, HttpStatus.BAD_REQUEST);
+           throw new HttpException(`Error liking feed for user with ID: ${userId}`, HttpStatus.BAD_REQUEST);
        }
    }
 

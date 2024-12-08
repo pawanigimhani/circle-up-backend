@@ -10,11 +10,11 @@ export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   async signup(signupDto: SignupDto) {
-    const { email, name, password } = signupDto;
+    const { email, username, password } = signupDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await this.prisma.user.create({
-      data: { email, name, password: hashedPassword },
+      data: { email, username, password: hashedPassword },
     });
 
     return { token: this.jwtService.sign({ id: user.id, email: user.email }, {expiresIn:'1h'}) };

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';  
 import { UserImageDto } from './dto/userImage.dto';
+import { UserNameDto } from './dto/username.dto';
 import { Logger, HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
@@ -35,7 +36,7 @@ export class UserService {
 
 // Get user details by ID
 
-async getClientDetails(id: string) {
+async getUserDetails(id: string) {
     this.logger.log(`Fetching details for user with ID: ${id}`);
     try {
         const result = await this.prisma.user.findUnique({
@@ -45,6 +46,7 @@ async getClientDetails(id: string) {
             select: {
                 name: true,
                 image: true,
+                username:true,
             }
         });
         this.logger.log(`Fetched details successfully for user with ID: ${id}`);
@@ -52,6 +54,27 @@ async getClientDetails(id: string) {
     } catch (error) {
         this.logger.error(`Failed to fetch details for user with ID: ${id}`, error.stack);
         throw new HttpException('Failed to fetch user details', HttpStatus.NOT_FOUND);
+    }
+}
+
+// Update user profile naem
+
+async updateProfileName(dto: UserNameDto ) {
+    this.logger.log(`Updating profile for user with ID: ${dto.userId}`);
+    try {
+        const result = await this.prisma.user.update({
+            where: {
+                id: dto.userId,
+            },
+            data: {
+                name: dto.name,
+            },
+        });
+        this.logger.log(`Profile updated successfully for user with ID: ${dto.userId}`);
+        return result;
+    } catch (error) {
+        this.logger.error(`Failed to update profile for user with ID: ${dto.userId}`, error.stack);
+        throw new HttpException('Failed to update profile', HttpStatus.BAD_REQUEST);
     }
 }
   

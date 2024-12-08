@@ -12,7 +12,7 @@ export class HomeController {
 
   //Fetches the home feed regarding to created date and amount of likes
 
-  @Get('/posts')
+  @Get('posts')
   async getAllFeedImages() {
 
     this.logger.log('Received request to fetch all feed images.');

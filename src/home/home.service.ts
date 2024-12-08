@@ -36,6 +36,7 @@ export class HomeService {
             },
           },
         },
+        createdAt: true,
       },
       orderBy: [
         { createdAt: 'desc' }, // First index: time created
